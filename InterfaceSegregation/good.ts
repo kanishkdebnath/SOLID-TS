@@ -11,12 +11,12 @@ interface LoanProcessor {
 
 // LoanProcessorWithNotification extends LoanProcessor to include the sendNotification method
 // Only classes that require notification functionality will implement this interface.
-interface LoanProcessorWithNotification extends LoanProcessor {
+interface NotificationInterface {
   sendNotification(): void;
 }
 
 // PersonalLoan implements LoanProcessorWithNotification because it needs to handle loan notifications.
-class PersonalLoan implements LoanProcessorWithNotification {
+class PersonalLoan implements LoanProcessor, NotificationInterface {
   applyLoan(): void {
     console.log("Applying for a personal loan.");
   }
@@ -36,7 +36,7 @@ class PersonalLoan implements LoanProcessorWithNotification {
 }
 
 // BusinessLoan implements LoanProcessorWithNotification, since it also needs notification functionality.
-class BusinessLoan implements LoanProcessorWithNotification {
+class BusinessLoan implements LoanProcessor, NotificationInterface {
   applyLoan(): void {
     console.log("Applying for a business loan.");
   }
@@ -73,15 +73,15 @@ class CarLoan implements LoanProcessor {
 
 // main code
 // PersonalLoan requires notification functionality, so it implements LoanProcessorWithNotification.
-const personalLoan: LoanProcessorWithNotification = new PersonalLoan();
+const personalLoan: PersonalLoan = new PersonalLoan();
 personalLoan.sendNotification();  // PersonalLoan can send notifications.
 
 // BusinessLoan also requires notification functionality, so it implements LoanProcessorWithNotification.
-const businessLoan: LoanProcessorWithNotification = new BusinessLoan();
+const businessLoan: BusinessLoan = new BusinessLoan();
 businessLoan.sendNotification();  // BusinessLoan can send notifications.
 
 // CarLoan does not need notifications, so it only implements LoanProcessor.
 // This class does not implement sendNotification, which is correct as per ISP.
-const carLoan: LoanProcessor = new CarLoan();
+const carLoan: CarLoan = new CarLoan();
 // This will not be allowed anymore
 // carLoan.sendNotification();   // carLoan does not have sendNotification method, following ISP.
